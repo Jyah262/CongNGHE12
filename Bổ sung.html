@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thông tin bổ sung</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #0b1221;
+      --bg-soft: #111a2f;
+      --card: #162542;
+      --accent: #4cc9f0;
+      --accent-2: #80ffdb;
+      --text: #e6f1ff;
+      --muted: #9fb3c8;
+      --shadow: 0 20px 40px rgba(4, 14, 34, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #1c2f4f 0%, var(--bg) 45%, #060b16 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 48px 10vw 24px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--accent);
+    }
+
+    .page-nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(11, 18, 33, 0.92);
+      backdrop-filter: blur(10px);
+      padding: 12px 8vw;
+      border-bottom: 1px solid rgba(76, 201, 240, 0.2);
+    }
+
+    .page-nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 20px;
+      list-style: none;
+      padding-left: 0;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .page-nav a {
+      color: var(--accent-2);
+      text-decoration: none;
+    }
+
+    .page-nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      padding: 24px 8vw 80px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid rgba(128, 255, 219, 0.15);
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      margin-bottom: 8px;
+      color: var(--accent-2);
+    }
+
+    ul {
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    p {
+      color: var(--muted);
+    }
+
+    .media img {
+      width: 100%;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="page-nav">
+    <ul>
+      <li><a href="main.html">Tổng quan</a></li>
+      <li><a href="M%E1%BB%A5c%20ti%C3%AAu.html">Mục tiêu</a></li>
+      <li><a href="Ph%E1%BA%A7n%20I.html">Phần I</a></li>
+      <li><a href="Ph%E1%BA%A7n%20II.html">Phần II</a></li>
+      <li><a href="Ph%E1%BA%A7n%20III.html">Phần III</a></li>
+      <li><a href="Luy%E1%BB%87n%20t%E1%BA%ADp.html">Luyện tập</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Thông tin bổ sung</h1>
+  </header>
+
+  <main>
+    <div class="grid">
+      <div class="card">
+        <h3>Ứng dụng thực tế</h3>
+        <ul>
+          <li>Vi xử lý trong điện thoại điều khiển mọi thao tác nhờ hệ cổng logic.</li>
+          <li>Hệ thống đèn giao thông thông minh sử dụng tín hiệu số để tối ưu luồng xe.</li>
+          <li>Thiết bị IoT truyền dữ liệu dạng bit để tiết kiệm năng lượng.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Lịch sử đại số logic</h3>
+        <p>
+          George Boole (1815–1864) đặt nền móng cho đại số logic, tạo cơ sở cho máy tính số hiện đại.
+        </p>
+        <div class="media">
+          <img
+            src="BOOLE.jpg"
+            alt="Chân dung George Boole"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top: 20px;">
+      <h3>Ví dụ đời sống</h3>
+      <p>
+        Bạn có thể xem bảng chọn phim trực tuyến như một phép AND: chỉ khi bạn &gt; 18 tuổi và có tài
+        khoản hoạt động thì hệ thống mới cho phép xem phim giới hạn độ tuổi.
+      </p>
+    </div>
+  </main>
+</body>
+</html>

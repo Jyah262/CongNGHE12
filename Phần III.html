@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phần III: Cổng logic cơ bản</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #0b1221;
+      --bg-soft: #111a2f;
+      --card: #162542;
+      --accent: #4cc9f0;
+      --accent-2: #80ffdb;
+      --text: #e6f1ff;
+      --muted: #9fb3c8;
+      --shadow: 0 20px 40px rgba(4, 14, 34, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #1c2f4f 0%, var(--bg) 45%, #060b16 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 48px 10vw 24px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--accent);
+    }
+
+    .page-nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(11, 18, 33, 0.92);
+      backdrop-filter: blur(10px);
+      padding: 12px 8vw;
+      border-bottom: 1px solid rgba(76, 201, 240, 0.2);
+    }
+
+    .page-nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 20px;
+      list-style: none;
+      padding-left: 0;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .page-nav a {
+      color: var(--accent-2);
+      text-decoration: none;
+    }
+
+    .page-nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      padding: 24px 8vw 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(76, 201, 240, 0.18);
+      color: var(--accent-2);
+      font-size: 0.85rem;
+      width: fit-content;
+    }
+
+    .gate-section {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 22px;
+      border: 1px solid rgba(128, 255, 219, 0.15);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .gate-section h2 {
+      color: var(--accent-2);
+      font-size: clamp(1.5rem, 2.2vw, 2rem);
+      text-align: left;
+    }
+
+    .gate-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      align-items: start;
+    }
+
+    .gate-details {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      color: var(--text);
+      padding-left: 0;
+    }
+
+    .gate-details strong {
+      color: var(--accent);
+    }
+
+    .gate-text {
+      color: var(--text);
+    }
+
+    .gate-text p {
+      margin-top: 10px;
+    }
+
+    .gate-media {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .gate-figure {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+    }
+
+    .gate-figure img {
+      height: 100%;
+      border-radius: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+      background: #fff;
+    }
+
+    .gate-figure figcaption {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 8px;
+    }
+
+    .truth-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .truth-table th,
+    .truth-table td {
+      padding: 10px 12px;
+      border: 1px solid rgba(128, 255, 219, 0.15);
+      text-align: center;
+    }
+
+    .truth-table th {
+      background: rgba(76, 201, 240, 0.15);
+      color: var(--accent-2);
+    }
+
+    .application {
+      color: var(--muted);
+    }
+
+    .overline {
+      text-decoration: overline;
+      text-decoration-thickness: 1px;
+    }
+
+    .logic-demo {
+      display: grid;
+      gap: 12px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #111;
+    }
+
+    .logic-demo svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .logic-demo .led {
+      fill: #555;
+      stroke: #222;
+      stroke-width: 2;
+    }
+
+    .logic-demo .led.on {
+      fill: #ffcc00;
+    }
+
+    .or-demo .led.on {
+      filter: url(#orGlow);
+    }
+
+    .and-demo .led.on {
+      filter: url(#andGlow);
+    }
+
+    .nor-demo .led.on {
+      filter: url(#norGlow);
+    }
+
+    .nand-demo .led.on {
+      filter: url(#nandGlow);
+    }
+
+    .not-demo .led.on {
+      filter: url(#notGlow);
+    }
+
+    .logic-demo .hit {
+      fill: transparent;
+      cursor: pointer;
+    }
+
+    .logic-demo .lbl {
+      font-weight: 700;
+      font-size: 18px;
+      fill: #111;
+    }
+  </style>
+</head>
+<body>
+  <nav class="page-nav">
+    <ul>
+      <li><a href="main.html">Tổng quan</a></li>
+      <li><a href="M%E1%BB%A5c%20ti%C3%AAu.html">Mục tiêu</a></li>
+      <li><a href="Ph%E1%BA%A7n%20I.html">Phần I</a></li>
+      <li><a href="Ph%E1%BA%A7n%20II.html">Phần II</a></li>
+      <li><a href="Luy%E1%BB%87n%20t%E1%BA%ADp.html">Luyện tập</a></li>
+      <li><a href="B%E1%BB%95%20sung.html">Bổ sung</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Phần III: Cổng logic cơ bản</h1>
+  </header>
+
+  <main>
+    <section class="gate-section" id="or">
+      <h2>1. Cổng OR</h2>
+      <div class="gate-content">
+        <div class="gate-text">
+          <ul class="gate-details">
+            <li><strong>Hàm logic:</strong> y = x₁ + x₂</li>
+            <li><strong>Kí hiệu logic:</strong> cổng OR cho đầu ra y = 1 khi ít nhất một đầu vào bằng 1.</li>
+          </ul>
+          <p>Khi ít nhất một trong hai lối vào x₁ và x₂ bằng 1 thì lối ra y bằng 1. Còn khi cả hai lối vào bằng 0 thì lối ra bằng 0.</p>
+          <p class="application"><strong>Công dụng:</strong> Kết hợp nhiều tín hiệu đầu vào thành một tín hiệu đầu ra, dùng trong mạch cộng logic, mạch điều khiển đóng/ngắt.</p>
+        </div>
+        <div>
+          <h3>Bảng chân lí cổng OR</h3>
+          <table class="truth-table">
+            <thead>
+              <tr>
+                <th>x₁</th>
+                <th>x₂</th>
+                <th>y</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="gate-media">
+        <figure class="gate-figure logic-demo">
+          <svg id="orSvg" class="or-demo" viewBox="0 0 640 240" role="img" aria-label="Mô phỏng cổng OR với đèn LED đầu vào và đầu ra">
+            <defs>
+              <filter id="orGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <text class="lbl" x="50" y="92">A</text>
+            <text class="lbl" x="50" y="152">B</text>
+            <path
+              d="M 160 58 Q 225 118 160 178 Q 250 178 315 158 Q 345 145 350 118 Q 345 91 315 78 Q 250 58 160 58 Z"
+              fill="none"
+              stroke="#000"
+              stroke-width="8"
+              stroke-linejoin="round"
+            />
+            <line x1="90" y1="88" x2="183" y2="88" stroke="#000" stroke-width="6" stroke-linecap="butt" />
+            <line x1="90" y1="148" x2="183" y2="148" stroke="#000" stroke-width="6" stroke-linecap="butt" />
+            <line x1="350" y1="118" x2="410" y2="118" stroke="#000" stroke-width="6" stroke-linecap="butt" />
+            <circle id="orLedA" class="led" cx="90" cy="88" r="7"></circle>
+            <circle id="orLedB" class="led" cx="90" cy="148" r="7"></circle>
+            <circle id="orLedY" class="led" cx="410" cy="118" r="7"></circle>
+            <text class="lbl" x="430" y="122">Y</text>
+            <circle id="orHitA" class="hit" cx="90" cy="88" r="18"></circle>
+            <circle id="orHitB" class="hit" cx="90" cy="148" r="18"></circle>
+          </svg>
+          <figcaption>Hình 21.6a. Mô phỏng cổng OR với LED đầu dây ngoài</figcaption>
+        </figure>
+        <figure class="gate-figure">
+          <img src="74LS32.jpg" />
+          <figcaption>Hình 21.6. IC 74LS32</figcaption>
+        </figure>
+        <figure class="gate-figure">
+          <img src="74LS32_pinout.jpg" alt="IC 74LS32 chứa 4 cổng OR" />
+          <figcaption>Hình 21.7. IC tích hợp 4 cổng OR (74LS32)</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="gate-section" id="and">
+      <h2>2. Cổng AND</h2>
+      <div class="gate-content">
+        <div class="gate-text">
+          <ul class="gate-details">
+            <li><strong>Hàm logic:</strong> y = x₁ · x₂</li>
+            <li><strong>Kí hiệu logic:</strong> cổng AND cho đầu ra y = 1 khi cả hai đầu vào đều bằng 1.</li>
+          </ul>
+          <p>Khi cả hai lối vào x₁ và x₂ bằng 1 thì lối ra y bằng 1. Còn khi ít nhất một lối vào bằng 0 thì lối ra bằng 0.</p>
+          <p class="application"><strong>Công dụng:</strong> Dùng trong mạch nhân tín hiệu, mạch điều khiển đóng/ngắt và kết hợp điều kiện logic.</p>
+        </div>
+        <div>
+          <h3>Bảng chân lí cổng AND</h3>
+          <table class="truth-table">
+            <thead>
+              <tr>
+                <th>x₁</th>
+                <th>x₂</th>
+                <th>y</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="gate-media">
+        <figure class="gate-figure logic-demo">
+          <svg id="andSvg" class="and-demo" viewBox="0 0 640 240" role="img" aria-label="Mô phỏng cổng AND với đèn LED đầu vào và đầu ra">
+            <defs>
+              <filter id="andGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <text class="lbl" x="50" y="92">A</text>
+            <text class="lbl" x="50" y="152">B</text>
+            <path d="M150 58 L260 58 A90 60 0 0 1 260 178 L150 178 Z" fill="none" stroke="#000" stroke-width="8" stroke-linejoin="round" />
+            <line x1="90" y1="88" x2="154" y2="88" stroke="#000" stroke-width="6" />
+            <line x1="90" y1="148" x2="154" y2="148" stroke="#000" stroke-width="6" />
+            <line x1="350" y1="118" x2="410" y2="118" stroke="#000" stroke-width="6" />
+            <circle id="andLedA" class="led" cx="90" cy="88" r="7"></circle>
+            <circle id="andLedB" class="led" cx="90" cy="148" r="7"></circle>
+            <circle id="andLedY" class="led" cx="410" cy="118" r="7"></circle>
+            <text class="lbl" x="430" y="122">Y</text>
+            <circle id="andHitA" class="hit" cx="90" cy="88" r="18"></circle>
+            <circle id="andHitB" class="hit" cx="90" cy="148" r="18"></circle>
+          </svg>
+          <figcaption>Hình 21.8a. Mô phỏng cổng AND với LED đầu dây ngoài</figcaption>
+        </figure>
+        <figure class="gate-figure">
+          <img src="74LS08.jpg" />
+          <figcaption>Hình 21.8. IC 74LS08</figcaption>
+        </figure>
+        <figure class="gate-figure">
+          <img src="74LS08_pinout.jpg" />
+          <figcaption>Hình 21.9. IC tích hợp 4 cổng AND (74LS08)</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="gate-section" id="not">
+      <h2>3. Cổng NOT</h2>
+      <div class="gate-content">
+        <div class="gate-text">
+          <ul class="gate-details">
+            <li><strong>Hàm logic:</strong> y = x̅</li>
+            <li><strong>Kí hiệu logic:</strong> cổng NOT đảo trạng thái đầu vào.</li>
+          </ul>
+          <p>Lối ra y luôn ở trạng thái ngược (đảo) với lối vào x.</p>
+          <p class="application"><strong>Công dụng:</strong> Đảo mức logic trong các mạch điện tử, mạch cảm biến, và tạo tín hiệu điều khiển ngược.</p>
+        </div>
+        <div>
+          <h3>Bảng chân lí cổng NOT</h3>
+          <table class="truth-table">
+            <thead>
+              <tr>
+                <th>x</th>
+                <th>y</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>0</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="gate-media">
+        <figure class="gate-figure logic-demo">
+          <svg id="notSvg" class="not-demo" viewBox="0 0 640 240" role="img" aria-label="Mô phỏng cổng NOT với đèn LED đầu vào và đầu ra">
+            <defs>
+              <filter id="notGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <text class="lbl" x="50" y="122">A</text>
+            <path d="M150 58 L150 178 L310 118 Z" fill="none" stroke="#000" stroke-width="8" stroke-linejoin="round" />
+            <circle cx="325" cy="118" r="10" fill="none" stroke="#000" stroke-width="8" />
+            <line x1="90" y1="118" x2="154" y2="118" stroke="#000" stroke-width="6" />
+            <line x1="340" y1="118" x2="404" y2="118" stroke="#000" stroke-width="6" />
+            <circle id="notLedA" class="led" cx="90" cy="118" r="7"></circle>
+            <circle id="notLedY" class="led" cx="404" cy="118" r="7"></circle>
+            <text class="lbl" x="424" y="122">Y</text>
+            <circle id="notHitA" class="hit" cx="90" cy="118" r="18"></circle>
+          </svg>
+          <figcaption>Hình 21.10a. Mô phỏng cổng NOT với LED đầu dây ngoài</figcaption>
+        </figure>
+        <figure class="gate-figure">
+          <img src="74LS04.jpg" />
+          <figcaption>Hình 21.10. IC 74LS04</figcaption>
+        </figure>
+        <figure class="gate-figure">
+          <img src="74LS04_pinout.jpg" />
+          <figcaption>Hình 21.11. IC tích hợp 6 cổng NOT (74LS04)</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="gate-section" id="nor">
+      <h2>4. Cổng NOR</h2>
+      <div class="gate-content">
+        <div class="gate-text">
+          <ul class="gate-details">
+            <li><strong>Hàm logic:</strong> y = <span class = "overline"> x₁ + x₂ </span></li>
+            <li><strong>Kí hiệu logic:</strong> cổng NOR là cổng OR có phủ định ở đầu ra.</li>
+          </ul>
+          <p>Cổng NOR có thể được thiết lập bằng cách mắc nối tiếp một cổng OR với một cổng NOT.</p>
+          <p>Khi ít nhất một trong hai lối vào x₁ và x₂ bằng 1 thì lối ra y bằng 0. Khi cả hai lối vào bằng 0 thì lối ra bằng 1.</p>
+          <p class="application"><strong>Công dụng:</strong> Đảo ngược trạng thái trong mạch logic, kết hợp điều kiện phủ định và tạo tín hiệu điều khiển ngược.</p>
+        </div>
+        <div>
+          <h3>Bảng chân lí cổng NOR</h3>
+          <table class="truth-table">
+            <thead>
+              <tr>
+                <th>x₁</th>
+                <th>x₂</th>
+                <th>y</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>0</td>
+                <td>1</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="gate-media">
+        <figure class="gate-figure logic-demo">
+          <svg id="norSvg" class="nor-demo" viewBox="0 0 640 240" role="img" aria-label="Mô phỏng cổng NOR với đèn LED đầu vào và đầu ra">
+            <defs>
+              <filter id="norGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <text class="lbl" x="50" y="92">A</text>
+            <text class="lbl" x="50" y="152">B</text>
+            <path
+              d="M 160 58 Q 225 118 160 178 Q 250 178 315 158 Q 345 145 350 118 Q 345 91 315 78 Q 250 58 160 58 Z"
+              fill="none"
+              stroke="#000"
+              stroke-width="8"
+              stroke-linejoin="round"
+            />
+            <circle cx="359" cy="118" r="10" fill="none" stroke="#000" stroke-width="8" />
+            <line x1="90" y1="88" x2="183" y2="88" stroke="#000" stroke-width="6" stroke-linecap="butt" />
+            <line x1="90" y1="148" x2="183" y2="148" stroke="#000" stroke-width="6" stroke-linecap="butt" />
+            <line x1="369" y1="118" x2="433" y2="118" stroke="#000" stroke-width="6" stroke-linecap="butt" />
+            <circle id="norLedA" class="led" cx="90" cy="88" r="7"></circle>
+            <circle id="norLedB" class="led" cx="90" cy="148" r="7"></circle>
+            <circle id="norLedY" class="led" cx="433" cy="118" r="7"></circle>
+            <text class="lbl" x="453" y="122">Y</text>
+            <circle id="norHitA" class="hit" cx="90" cy="88" r="18"></circle>
+            <circle id="norHitB" class="hit" cx="90" cy="148" r="18"></circle>
+          </svg>
+          <figcaption>Hình 21.12a. Mô phỏng cổng NOR với LED đầu dây ngoài</figcaption>
+        </figure>
+        <figure class="gate-figure">
+          <img src="74LS02.jpg" />
+          <figcaption>Hình 21.12. IC 74LS02</figcaption>
+        </figure>
+        <figure class="gate-figure">
+          <img src="ICLS02_diagram.jpg" />
+          <figcaption>Hình 21.14. IC tích hợp 4 cổng NOR (74LS02)</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="gate-section" id="nand">
+      <h2>5. Cổng NAND</h2>
+      <div class="gate-content">
+        <div class="gate-text">
+          <ul class="gate-details">
+            <li><strong>Hàm logic:</strong> y = <span class = "overline"> x₁ · x₂ </span> </li>
+            <li><strong>Kí hiệu logic:</strong> cổng NAND là cổng AND có phủ định ở đầu ra.</li>
+          </ul>
+          <p>Cổng NAND có thể được tạo ra bằng cách mắc nối tiếp một cổng AND với một cổng NOT.</p>
+          <p>Khi cả hai lối vào x₁ và x₂ bằng 1 thì lối ra y bằng 0. Còn khi ít nhất một lối vào bằng 0 thì lối ra bằng 1.</p>
+          <p class="application"><strong>Công dụng:</strong> Đảo ngược trạng thái trong mạch nhân logic, tạo điều kiện phủ định và mạch điều khiển.</p>
+        </div>
+        <div>
+          <h3>Bảng chân lí cổng NAND</h3>
+          <table class="truth-table">
+            <thead>
+              <tr>
+                <th>x₁</th>
+                <th>x₂</th>
+                <th>y</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>0</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="gate-media">
+        <figure class="gate-figure logic-demo">
+          <svg id="nandSvg" class="nand-demo" viewBox="0 0 640 240" role="img" aria-label="Mô phỏng cổng NAND với đèn LED đầu vào và đầu ra">
+            <defs>
+              <filter id="nandGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <text class="lbl" x="50" y="92">A</text>
+            <text class="lbl" x="50" y="152">B</text>
+            <path d="M150 58 L260 58 A90 60 0 0 1 260 178 L150 178 Z" fill="none" stroke="#000" stroke-width="8" stroke-linejoin="round" />
+            <circle cx="365" cy="118" r="10" fill="none" stroke="#000" stroke-width="8" />
+            <line x1="90" y1="88" x2="154" y2="88" stroke="#000" stroke-width="6" />
+            <line x1="90" y1="148" x2="154" y2="148" stroke="#000" stroke-width="6" />
+            <line x1="378" y1="118" x2="442" y2="118" stroke="#000" stroke-width="6" />
+            <circle id="nandLedA" class="led" cx="90" cy="88" r="7"></circle>
+            <circle id="nandLedB" class="led" cx="90" cy="148" r="7"></circle>
+            <circle id="nandLedY" class="led" cx="442" cy="118" r="7"></circle>
+            <text class="lbl" x="462" y="122">Y</text>
+            <circle id="nandHitA" class="hit" cx="90" cy="88" r="18"></circle>
+            <circle id="nandHitB" class="hit" cx="90" cy="148" r="18"></circle>
+          </svg>
+          <figcaption>Hình 21.15a. Mô phỏng cổng NAND với LED đầu dây ngoài</figcaption>
+        </figure>
+        <figure class="gate-figure">
+          <img src="74LS00.jpg" />
+          <figcaption>Hình 21.15. IC 74LS00</figcaption>
+        </figure>
+        <figure class="gate-figure">
+          <img src="74LS00_pinout.jpg" />
+          <figcaption>Hình 21.17. IC tích hợp 4 cổng NAND (74LS00)</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+  <script>
+    const orLedA = document.getElementById("orLedA");
+    const orLedB = document.getElementById("orLedB");
+    const orLedY = document.getElementById("orLedY");
+    const orHitA = document.getElementById("orHitA");
+    const orHitB = document.getElementById("orHitB");
+
+    const andLedA = document.getElementById("andLedA");
+    const andLedB = document.getElementById("andLedB");
+    const andLedY = document.getElementById("andLedY");
+    const andHitA = document.getElementById("andHitA");
+    const andHitB = document.getElementById("andHitB");
+
+    const norLedA = document.getElementById("norLedA");
+    const norLedB = document.getElementById("norLedB");
+    const norLedY = document.getElementById("norLedY");
+    const norHitA = document.getElementById("norHitA");
+    const norHitB = document.getElementById("norHitB");
+
+    const notLedA = document.getElementById("notLedA");
+    const notLedY = document.getElementById("notLedY");
+    const notHitA = document.getElementById("notHitA");
+
+    const nandLedA = document.getElementById("nandLedA");
+    const nandLedB = document.getElementById("nandLedB");
+    const nandLedY = document.getElementById("nandLedY");
+    const nandHitA = document.getElementById("nandHitA");
+    const nandHitB = document.getElementById("nandHitB");
+
+    let orA = 0;
+    let orB = 0;
+    let andA = 0;
+    let andB = 0;
+    let norA = 0;
+    let norB = 0;
+    let nandA = 0;
+    let nandB = 0;
+    let notA = 0;
+
+    const updateOr = () => {
+      if (orA === 1 || orB === 1) {
+        orLedY.classList.add("on");
+      } else {
+        orLedY.classList.remove("on");
+      }
+    };
+
+    const updateAnd = () => {
+      if (andA === 1 && andB === 1) {
+        andLedY.classList.add("on");
+      } else {
+        andLedY.classList.remove("on");
+      }
+    };
+
+    const updateNor = () => {
+      if (norA === 1 || norB === 1) {
+        norLedY.classList.remove("on");
+      } else {
+        norLedY.classList.add("on");
+      }
+    };
+    const updateNand = () => {
+      if (nandA === 1 && nandB === 1) {
+        nandLedY.classList.remove("on");
+      } else {
+        nandLedY.classList.add("on");
+      }
+    };
+
+    const updateNot = () => {
+      if (notA === 1) {
+        notLedY.classList.remove("on");
+      } else {
+        notLedY.classList.add("on");
+      }
+    };
+
+    if (orHitA && orHitB) {
+      orHitA.addEventListener("click", () => {
+        orA = 1 - orA;
+        orLedA.classList.toggle("on", orA === 1);
+        updateOr();
+      });
+
+      orHitB.addEventListener("click", () => {
+        orB = 1 - orB;
+        orLedB.classList.toggle("on", orB === 1);
+        updateOr();
+      });
+
+      updateOr();
+    }
+
+    if (andHitA && andHitB) {
+      andHitA.addEventListener("click", () => {
+        andA = 1 - andA;
+        andLedA.classList.toggle("on", andA === 1);
+        updateAnd();
+      });
+
+      andHitB.addEventListener("click", () => {
+        andB = 1 - andB;
+        andLedB.classList.toggle("on", andB === 1);
+        updateAnd();
+      });
+
+      updateAnd();
+    }
+
+    if (norHitA && norHitB) {
+      norHitA.addEventListener("click", () => {
+        norA = 1 - norA;
+        norLedA.classList.toggle("on", norA === 1);
+        updateNor();
+      });
+
+      norHitB.addEventListener("click", () => {
+        norB = 1 - norB;
+        norLedB.classList.toggle("on", norB === 1);
+        updateNor();
+      });
+
+      updateNor();
+    }
+    if (nandHitA && nandHitB) {
+      nandHitA.addEventListener("click", () => {
+        nandA = 1 - nandA;
+        nandLedA.classList.toggle("on", nandA === 1);
+        updateNand();
+      });
+
+      nandHitB.addEventListener("click", () => {
+        nandB = 1 - nandB;
+        nandLedB.classList.toggle("on", nandB === 1);
+        updateNand();
+      });
+
+      updateNand();
+    }
+
+    if (notHitA) {
+      notHitA.addEventListener("click", () => {
+        notA = 1 - notA;
+        notLedA.classList.toggle("on", notA === 1);
+        updateNot();
+      });
+
+      updateNot();
+    }
+  </script>
+</body>
+</html>

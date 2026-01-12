@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phần II: Các tham số của tín hiệu số</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #0b1221;
+      --bg-soft: #111a2f;
+      --card: #162542;
+      --accent: #4cc9f0;
+      --accent-2: #80ffdb;
+      --text: #e6f1ff;
+      --muted: #9fb3c8;
+      --shadow: 0 20px 40px rgba(4, 14, 34, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #1c2f4f 0%, var(--bg) 45%, #060b16 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 48px 10vw 24px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--accent);
+    }
+
+    .page-nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(11, 18, 33, 0.92);
+      backdrop-filter: blur(10px);
+      padding: 12px 8vw;
+      border-bottom: 1px solid rgba(76, 201, 240, 0.2);
+    }
+
+    .page-nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 20px;
+      list-style: none;
+      padding-left: 0;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .page-nav a {
+      color: var(--accent-2);
+      text-decoration: none;
+    }
+
+    .page-nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      padding: 24px 8vw 80px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 16px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 16px;
+      align-items: start;
+      background: var(--card);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid rgba(128, 255, 219, 0.15);
+      box-shadow: var(--shadow);
+    }
+
+    .step span {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: #0b1221;
+    }
+
+    p {
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <nav class="page-nav">
+    <ul>
+      <li><a href="main.html">Tổng quan</a></li>
+      <li><a href="M%E1%BB%A5c%20ti%C3%AAu.html">Mục tiêu</a></li>
+      <li><a href="Ph%E1%BA%A7n%20I.html">Phần I</a></li>
+      <li><a href="Ph%E1%BA%A7n%20III.html">Phần III</a></li>
+      <li><a href="Luy%E1%BB%87n%20t%E1%BA%ADp.html">Luyện tập</a></li>
+      <li><a href="B%E1%BB%95%20sung.html">Bổ sung</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Phần II: Các tham số của tín hiệu số</h1>
+  </header>
+
+  <main>
+    <div class="timeline">
+      <div class="step">
+        <span>1</span>
+        <div>
+          <h3>Chu kỳ (T) &amp; Tần số (f)</h3>
+          <p>Chu kỳ là thời gian để tín hiệu lặp lại một lần. Tần số f = 1/T đo số lần lặp trong 1 giây.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span>2</span>
+        <div>
+          <h3>Độ rộng xung (Pulse Width)</h3>
+          <p>Khoảng thời gian tín hiệu ở mức cao. Ảnh hưởng đến năng lượng và tốc độ truyền dữ liệu.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span>3</span>
+        <div>
+          <h3>Duty Cycle</h3>
+          <p>Tỉ lệ thời gian mức cao trong một chu kỳ. Dùng điều khiển động cơ, độ sáng LED.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span>4</span>
+        <div>
+          <h3>Thời gian lên/xuống</h3>
+          <p>Thời gian tín hiệu chuyển từ thấp lên cao hoặc ngược lại, ảnh hưởng đến tốc độ mạch.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

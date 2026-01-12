@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phần I: Khái niệm tín hiệu số</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #0b1221;
+      --bg-soft: #111a2f;
+      --card: #162542;
+      --accent: #4cc9f0;
+      --accent-2: #80ffdb;
+      --text: #e6f1ff;
+      --muted: #9fb3c8;
+      --shadow: 0 20px 40px rgba(4, 14, 34, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #1c2f4f 0%, var(--bg) 45%, #060b16 100%);
+      color: var(--text);
+      line-height: 1.8;
+      font-size: 1.05rem;
+    }
+
+    header {
+      padding: 48px 10vw 24px;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 4.6vw, 3.4rem);
+      color: var(--accent);
+    }
+
+    .page-nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(11, 18, 33, 0.92);
+      backdrop-filter: blur(10px);
+      padding: 12px 8vw;
+      border-bottom: 1px solid rgba(76, 201, 240, 0.2);
+    }
+
+    .page-nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 20px;
+      list-style: none;
+      padding-left: 0;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .page-nav a {
+      color: var(--accent-2);
+      text-decoration: none;
+    }
+
+    .page-nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      padding: 24px 8vw 80px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 28px;
+      grid-template-columns: 1fr;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 28px;
+      border: 1px solid rgba(128, 255, 219, 0.15);
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      margin-bottom: 12px;
+      color: var(--accent-2);
+      font-size: 1.4rem;
+    }
+    .card img {
+      margin-top: 16px;
+      width: 100%;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+    }
+    ul {
+      padding-left: 18px;
+      color: var(--muted);
+    }
+    p {
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="page-nav">
+    <ul>
+      <li><a href="main.html">Tổng quan</a></li>
+      <li><a href="M%E1%BB%A5c%20ti%C3%AAu.html">Mục tiêu</a></li>
+      <li><a href="Ph%E1%BA%A7n%20II.html">Phần II</a></li>
+      <li><a href="Ph%E1%BA%A7n%20III.html">Phần III</a></li>
+      <li><a href="Luy%E1%BB%87n%20t%E1%BA%ADp.html">Luyện tập</a></li>
+      <li><a href="B%E1%BB%95%20sung.html">Bổ sung</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Phần I: Khái niệm tín hiệu số</h1>
+  </header>
+
+  <main>
+    <div class="grid">
+      <div class="card">
+        <h3>Tín hiệu số là gì?</h3>
+        <p>Tín hiệu số là tín hiệu rời rạc theo thời gian và biên độ, thường chỉ nhận hai mức 0 và 1.</p>
+        <ul>
+          <li>Mức cao (1) biểu diễn trạng thái bật/đúng.</li>
+          <li>Mức thấp (0) biểu diễn trạng thái tắt/sai.</li>
+        </ul>
+        <img
+        src="Digital.jpg"
+        alt="Minh hoạ tín hiệu số dạng xung vuông"
+        />
+      </div>
+      <div class="card">
+        <h3>Tín hiệu tương tự &amp; số</h3>
+        <p>Tín hiệu tương tự biến thiên liên tục, trong khi tín hiệu số được mã hoá theo các mức rời rạc.</p>
+        <ul>
+          <li>Dễ chống nhiễu, lưu trữ và xử lý.</li>
+          <li>Phù hợp với hệ thống máy tính.</li>
+        </ul>
+        <img
+        src="Analog.jpg"
+        alt="Minh hoạ tín hiệu tương tự dạng liên tục"
+        />
+      </div>
+    </div>
+  </main>
+</body>
+</html>
